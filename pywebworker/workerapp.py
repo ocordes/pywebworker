@@ -40,6 +40,7 @@ bootstrap.init_app(flask_app)
 
 
 
+
 @flask_app.context_processor
 def utility_processor():
     return { 'ww_version': __version__,
