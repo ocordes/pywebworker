@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block navbar %}
-    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <nav class="navbar navbar-dark sticky-top bg-primary flex-md-nowrap p-0">
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">
         {% if appname %}
           WebWorker - {{appname}}
@@ -34,74 +34,55 @@
       <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
-            <ul class="nav flex-column">
+            <ul class="nav flex-column border-bottom">
               <li class="nav-item">
-                <a class="nav-link active" href="#">
+                <!---<a class="nav-link active" href="#">-->
+                <a class="nav-link" href="/index">
                   <span data-feather="home"></span>
                   Dashboard <span class="sr-only">(current)</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/orders">
                   <span data-feather="file"></span>
                   Orders
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/products">
                   <span data-feather="shopping-cart"></span>
                   Products
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/users">
                   <span data-feather="users"></span>
                   Customers
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/reports">
                   <span data-feather="bar-chart-2"></span>
                   Reports
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/">
                   <span data-feather="layers"></span>
                   Integrations
                 </a>
               </li>
             </ul>
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-              <span>Saved reports</span>
-              <a class="d-flex align-items-center text-muted" href="#">
-                <span data-feather="plus-circle"></span>
-              </a>
-            </h6>
+
+            {# applications put in here additional menu content #}
+            {% block left_sidebar_extra_content %}{% endblock %}
+
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file-text"></span>
-                  Current month
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file-text"></span>
-                  Last quarter
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file-text"></span>
-                  Social engagement
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file-text"></span>
-                  Year-end sale
-                </a>
+                <div class="footer">
+                  WebWorker {{ww_version}} <br>
+                    © {{ww_copyright}}</p>
+                </div>
               </li>
             </ul>
           </div>
@@ -109,7 +90,9 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
               <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-                <h1 class="h2">Dashboard</h1>
+                <h1 class="h2">
+                {% if title %}{{ title }}{% else %}This page{% endif %}
+                </h1>
 
                 {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -118,6 +101,8 @@
                     {% endfor %}
                 {% endif %}
                 {% endwith %}
+
+
 
                 <div class="btn-toolbar mb-2 mb-md-0">
                   <div class="btn-group mr-2">
@@ -131,6 +116,21 @@
                 </div>
               </div>
 
+              {% if debug %}
+              <div class="d-flex flex-wrap flex-md-nowrap pb-2 mb-3 border-bottom">
+              Javascript debug:  <p class="offset-md-1" id="debug"></p>
+              </div>
+              {% endif %}
+
+              {% with messages = get_flashed_messages() %}
+              {% if messages %}
+              <div class="d-flex flex-wrap flex-md-nowrap pb-2 mb-3 border-bottom">
+                  {% for message in messages %}
+                  <div class="alert alert-info" role="alert">{{ message }}</div>
+                  {% endfor %}
+              </div>
+              {% endif %}
+              {% endwith %}
 
               {# application content needs to be provided in the app_content block #}
               {% block app_content %}{% endblock %}
@@ -139,14 +139,6 @@
       </div>
     </div>
 
-
-    {# Footer #}
-
-    <footer class="footer">
-      <div class="container">
-        <span class="text-muted"> WebWorker {{ww_version}} © {{ww_copyright}}</span>
-      </div>
-    </footer>
 
 
   </div>
@@ -161,6 +153,18 @@
     <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
     <script>
       feather.replace()
+    </script>
+
+    <script>
+      //$(document).ready(function(){
+      //   $("a[href='" + window.location.href + "']").addClass("active");
+      //});
+      $(document).ready(function(){
+         //$("a[href*='" + location.pathname + "']").addClass("active");
+         $("a[href='" + location.pathname + "']").addClass("active");
+         //$("a[href='" + window.location.href + "']").addClass("active");
+         document.getElementById("debug").innerHTML = location.pathname;
+      });
     </script>
 
 {% endblock %}
