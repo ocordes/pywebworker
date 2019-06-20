@@ -26,3 +26,14 @@ def index():
 @flask_app.route('/orders', methods=['GET'])
 def base():
     return render_template('base.html', debug=True, title='Orders')
+
+
+
+@flask_app.route('/ajax/start_thread', methods=['GET'])
+def start_thread():
+    return jsonify(msg='Thread-Start: OK')
+
+
+@flask_app.route('/ajax/stop_thread', methods=['GET'])
+def stop_thread():
+    return jsonify(msg='Thread-Stop: OK')

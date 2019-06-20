@@ -7,6 +7,8 @@
 
 {% block styles %}
 {{super()}}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="{{url_for('static', filename='dashboard.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='sticky-footer.css')}}">
 {% endblock %}
@@ -94,16 +96,9 @@
                 {% if title %}{{ title }}{% else %}This page{% endif %}
                 </h1>
 
-                {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-info" role="alert">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-                {% endwith %}
 
 
-
+                {#
                 <div class="btn-toolbar mb-2 mb-md-0">
                   <div class="btn-group mr-2">
                     <button class="btn btn-sm btn-outline-secondary">Share</button>
@@ -114,7 +109,17 @@
                     This week
                   </button>
                 </div>
+                #}
               </div>
+
+              {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                  {% for message in messages %}
+                  <div class="alert alert-info" role="alert">{{ message }}</div>
+                  {% endfor %}
+              {% endif %}
+              {% endwith %}
+
 
               {% if debug %}
               <div class="d-flex flex-wrap flex-md-nowrap pb-2 mb-3 border-bottom">
@@ -122,15 +127,6 @@
               </div>
               {% endif %}
 
-              {% with messages = get_flashed_messages() %}
-              {% if messages %}
-              <div class="d-flex flex-wrap flex-md-nowrap pb-2 mb-3 border-bottom">
-                  {% for message in messages %}
-                  <div class="alert alert-info" role="alert">{{ message }}</div>
-                  {% endfor %}
-              </div>
-              {% endif %}
-              {% endwith %}
 
               {# application content needs to be provided in the app_content block #}
               {% block app_content %}{% endblock %}
@@ -150,21 +146,18 @@
 {{super()}}
 
 <!-- Icons -->
-    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-    <script>
-      feather.replace()
-    </script>
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script>
+  feather.replace()
+</script>
 
-    <script>
-      //$(document).ready(function(){
-      //   $("a[href='" + window.location.href + "']").addClass("active");
-      //});
-      $(document).ready(function(){
-         //$("a[href*='" + location.pathname + "']").addClass("active");
-         $("a[href='" + location.pathname + "']").addClass("active");
-         //$("a[href='" + window.location.href + "']").addClass("active");
-         document.getElementById("debug").innerHTML = location.pathname;
-      });
-    </script>
+<!-- Add a menu highlighing if the URL matches the menu links!-->
+<script>
+  $(document).ready(function(){
+      $("a[href='" + location.pathname + "']").addClass("active");
+      //$("a[href='" + window.location.href + "']").addClass("active");
+      document.getElementById("debug").innerHTML = location.pathname;
+  });
+</script>
 
 {% endblock %}

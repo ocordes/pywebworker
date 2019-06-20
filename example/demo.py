@@ -32,7 +32,7 @@ def worker1(self):
 
 
 
-#@app.maintask()
+@app.maintask
 def main():
     print('main task')
     pass

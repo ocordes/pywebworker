@@ -60,6 +60,7 @@ class WebWorkerApp(object):
                     debug=True)
 
 
-
-    def maintask(self, w):
-        return w
+    # decorator handling
+    def maintask(self, f):
+        print('Register main task:', f.__name__)
+        return f
