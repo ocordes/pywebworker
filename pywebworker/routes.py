@@ -9,10 +9,13 @@ changed by: Oliver Cordes 2019-06-16
 """
 
 
-from pywebworker.workerapp import socketio, flask_app
+from pywebworker.workerapp import socketio, flask_app, workerthreads
 
 from flask import render_template, session, request, jsonify
 
+
+
+from pywebworker.utils import get_messages
 
 @flask_app.route('/products', methods=['GET'])
 @flask_app.route('/users', methods=['GET'])
@@ -31,9 +34,16 @@ def base():
 
 @flask_app.route('/ajax/start_thread', methods=['GET'])
 def start_thread():
+    workerthreads.start_main_thread()
     return jsonify(msg='Thread-Start: OK')
 
 
 @flask_app.route('/ajax/stop_thread', methods=['GET'])
 def stop_thread():
+    workerthreads.stop_main_thread()
     return jsonify(msg='Thread-Stop: OK')
+
+
+@flask_app.route('/ajax/messages', methods=['GET'])
+def messages():
+    return jsonify(msgs=get_messages())

@@ -57,7 +57,7 @@
       <pre class="pre-scrollable bg-light" style="height: 100px;" id="messages">Text
       </pre>
     </div>
-    <a href="#" class="btn btn-primary">Button</a>
+    <a href="#" class="btn btn-primary" onclick="get_messages();">Button</a>
   </div>
 </div>
 
@@ -82,6 +82,16 @@ function stop_thread() {
         document.getElementById("debug").innerHTML = data.msg;
     });
 }
+
+function get_messages() {
+  $.get("/ajax/messages", function(data) {
+    document.getElementById("debug").innerHTML = data.msgs[0]
+    //data.msgs.forEach(function(item){
+    //   console.log(item.name + ' ' + item.id);
+    //});
+  });
+}
+
 </script>
 
 {% endblock %}

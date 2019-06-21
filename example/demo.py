@@ -17,7 +17,7 @@ from pywebworker.workerapp import WebWorkerApp
 app = WebWorkerApp()
 
 
-def worker1(self):
+def worker1():
 
     print('Download meter ...')
 
@@ -30,9 +30,12 @@ def worker1(self):
 
 
 
+@app.maintaskconfig
+def mainconfig():
+    pass
 
 
 @app.maintask
 def main():
     print('main task')
-    pass
+    worker1()

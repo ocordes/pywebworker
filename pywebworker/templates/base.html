@@ -2,7 +2,11 @@
 
 
 {% block title %}
-    {% if title %}{{ title }} - WebWorker{% else %}Welcome to Webworker{% endif %}
+    {% if title %}
+     {{ title }} - {% if app_name %}{{app_name}}{%else%}Application{%endif%}
+    {% else %}
+      Welcome to {% if app_name %}{{app_name}}{%else%}Application{%endif%}
+    {% endif %}
 {% endblock %}
 
 {% block styles %}
@@ -16,11 +20,7 @@
 {% block navbar %}
     <nav class="navbar navbar-dark sticky-top bg-primary flex-md-nowrap p-0">
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">
-        {% if appname %}
-          WebWorker - {{appname}}
-        {% else %}
-          WebWorker
-        {% endif %}
+        {% if app_name %}{{app_name}}{%else%}Application{%endif%}
       </a>
       <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
       <ul class="navbar-nav px-3">
@@ -82,8 +82,8 @@
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
                 <div class="footer">
-                  WebWorker {{ww_version}} <br>
-                    © {{ww_copyright}}</p>
+                  {% if app_name %}{{app_name}}{%else%}Application{%endif%} {{app_version}} <br>
+                    © {{app_copyright}}</p>
                 </div>
               </li>
             </ul>
