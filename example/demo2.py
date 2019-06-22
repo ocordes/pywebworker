@@ -10,9 +10,8 @@ changed by: Oliver Cordes 2019-06-21
 import time
 
 
-from pywebworker.workerapp import WebWorkerApp
+from pywebworker.workerapp import WebWorkerApp, globaldata
 from pywebworker.threads import WorkThread
-from pywebworker.utils import print
 
 
 app = WebWorkerApp()
@@ -34,19 +33,23 @@ class Worker(WorkThread):
 
     def run(self):
         print('({}) Download meter ...'.format(self.nr))
+        globaldata.print('({}) Download meter ...'.format(self.nr))
 
         for i in range(10):
             print('({}) Download ({}%)'.format(self.nr, i*10))
+            globaldata.print('({}) Download ({}%)'.format(self.nr, i*10))
             time.sleep(1)
 
 
         print('({})Download complete!'.format(self.nr))
+        globaldata.print('({})Download complete!'.format(self.nr))
 
 
 
 @app.maintask
 def main():
     print('Starting main task ...')
+    globaldata.print('Starting main task ...')
     while app.is_running:
         # spawn max workers
 
@@ -60,5 +63,7 @@ def main():
 
         time.sleep(1)
         print('Running')
+        globaldata.print('Running')
 
     print('Stopping main task!')
+    globaldata.print('Stopping main task!')

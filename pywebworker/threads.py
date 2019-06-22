@@ -28,6 +28,13 @@ class WorkerThreads(object):
         self._main_thread = None
         self._app = None
 
+        self._running = False
+
+
+    @property
+    def is_running(self):
+        return self._running
+
 
     def register_main_thread(self, f, app):
         self._main_thread_func = f
@@ -42,6 +49,7 @@ class WorkerThreads(object):
             self._app.start()
             self._main_thread = Thread(target=self._main_thread_func)
             self._main_thread.start()
+            self._running = True
 
 
     def stop_main_thread(self):
@@ -63,3 +71,4 @@ class WorkerThreads(object):
 
         # now start with an empty thread list
         self._worker_threads = []
+        self._running = False

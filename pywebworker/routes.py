@@ -3,19 +3,16 @@
 src/routes.py
 
 written by: Oliver Cordes 2019-06-16
-changed by: Oliver Cordes 2019-06-16
+changed by: Oliver Cordes 2019-06-22
 
 
 """
 
 
-from pywebworker.workerapp import socketio, flask_app, workerthreads
+from pywebworker.workerapp import socketio, flask_app, workerthreads, globaldata
 
 from flask import render_template, session, request, jsonify
 
-
-
-from pywebworker.utils import get_messages
 
 @flask_app.route('/products', methods=['GET'])
 @flask_app.route('/users', methods=['GET'])
@@ -44,6 +41,11 @@ def stop_thread():
     return jsonify(msg='Thread-Stop: OK')
 
 
+@flask_app.route('/ajax/running', methods=['GET'])
+def running():
+    return jsonify(status=workerthreads.is_running)
+
+
 @flask_app.route('/ajax/messages', methods=['GET'])
 def messages():
-    return jsonify(msgs=get_messages())
+    return jsonify(msgs=globaldata.get_messages())

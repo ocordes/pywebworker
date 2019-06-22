@@ -11,27 +11,29 @@ import sys
 
 import threading
 
-transfer_messages = []
+max_lines = 10
 
-transfer_message_lock = threading.Lock()
+class GlobalData(object):
+    msg_lock = threading.Lock()
 
-
-def get_messages():
-    global transfer_messages
-    transfer_message_lock.acquire()
-    msgs = transfer_messages
-    transfer_messages = []
-    transfer_message_lock.release()
-    sys.stdout.write(msgs)
-    return ['Hallo', 'Berta']
-    #return msgs
+    def __init__(self):
+        self._messages = []
 
 
-def print(*vars):
-    global transfer_messages
-    s = ' '.join([str(i) for i in vars])
-    transfer_message_lock.acquire()
-    transfer_messages.append(s)
-    transfer_message_lock.release()
-    sys.stdout.write(s+'\n')
-    sys.stdout.flush()
+    def get_messages(self):
+        self.msg_lock.acquire()
+        msgs = self._messages
+        #self._messages = []
+        self.msg_lock.release()
+        return msgs
+
+
+    def print(self, *vars):
+        s = ' '.join([str(i) for i in vars])
+        self.msg_lock.acquire()
+        self._messages.append(s)
+        if len(self._messages) > max_lines:
+            self._messages.pop(0)
+        self.msg_lock.release()
+
+        print(s,flush=True)

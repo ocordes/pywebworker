@@ -17,6 +17,7 @@ from flask_bootstrap import Bootstrap
 from flask_socketio import SocketIO
 
 from pywebworker.threads import WorkerThreads
+from pywebworker.utils import GlobalData
 
 
 # some details about the programmers
@@ -41,6 +42,8 @@ bootstrap.init_app(flask_app)
 
 
 workerthreads = WorkerThreads()
+
+globaldata = GlobalData()
 
 
 @flask_app.context_processor

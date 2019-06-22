@@ -67,11 +67,16 @@
 {{super()}}
 
 <script>
+
+var running = false;
+
+
 function start_thread() {
     $.get("/ajax/start_thread", function(data) {
       //$("#running_projects").html(data.projects);
       //$("#running_queue").html(data.queue);
       document.getElementById("debug").innerHTML = data.msg;
+      running = true;
     });
 }
 
@@ -84,13 +89,45 @@ function stop_thread() {
 }
 
 function get_messages() {
-  $.get("/ajax/messages", function(data) {
-    document.getElementById("debug").innerHTML = data.msgs[0]
-    //data.msgs.forEach(function(item){
-    //   console.log(item.name + ' ' + item.id);
-    //});
-  });
+  if (running) {
+    $.get("/ajax/messages", function(data) {
+      //document.getElementById("debug").innerHTML = $('#messages').innerHeight()
+      $('#messages').html('')
+      data.msgs.forEach(function(element, index, array){
+         //console.log(element + ' ' + index);
+         $('#messages').append(element+'\n')
+      });
+      $('#messages').animate({scrollTop: 999999}, 800);
+    });
+  };
 }
+
+
+function is_running() {
+  var status;
+  $.get("/ajax/running", function(data) {
+    document.getElementById("debug").innerHTML = data.status
+    status = data.status;
+  });
+  return status;
+}
+
+
+function update_messages() {
+    if (running) {
+       is_running();
+       get_messages();
+    }
+    window.setTimeout(update_messages, 1*1000);
+}
+
+
+// initial call
+$(document).ready(function() {
+// executes when HTML-Document is loaded and DOM is ready
+  update_messages();
+});
+
 
 </script>
 
